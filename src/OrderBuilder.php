@@ -138,7 +138,7 @@ class OrderBuilder
         return $this;
     }
 
-    public function create() : Order
+    public function create(): Order
     {
         $payload = $this->buildPayload();
 

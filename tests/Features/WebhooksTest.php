@@ -3,8 +3,8 @@
 namespace Wingly\Pwinty\Tests\Features;
 
 use FeatureTestCase;
-use Wingly\Pwinty\Events\WebhookProcessed;
 use Illuminate\Support\Facades\Event;
+use Wingly\Pwinty\Events\WebhookProcessed;
 
 class WebhooksTest extends FeatureTestCase
 {
