@@ -1,8 +1,8 @@
 <?php
 
-use Wingly\Pwinty\Tests\TestCase;
-use Wingly\Pwinty\Tests\Fixtures\User;
 use Illuminate\Database\Eloquent\Model as Eloquent;
+use Wingly\Pwinty\Tests\Fixtures\User;
+use Wingly\Pwinty\Tests\TestCase;
 
 abstract class FeatureTestCase extends TestCase
 {

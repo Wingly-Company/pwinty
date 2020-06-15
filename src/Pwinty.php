@@ -102,7 +102,7 @@ class Pwinty
                 'X-Pwinty-REST-API-Key' => $this->apiKey,
                 'X-Pwinty-MerchantId' => $this->merchantId,
                 'Content-type' => 'application/json',
-            ]
+            ],
         ];
 
         if ($params) {
