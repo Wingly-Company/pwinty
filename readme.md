@@ -1,57 +1,45 @@
 # Pwinty
 
 [![Latest Version on Packagist][ico-version]][link-packagist]
+[![MIT Licensed](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
+[![StyleCI](https://styleci.io/repos/272447992/shield)](https://styleci.io/repos/272447992)
 [![Total Downloads][ico-downloads]][link-downloads]
-[![Build Status][ico-travis]][link-travis]
-[![StyleCI][ico-styleci]][link-styleci]
 
-This is where your description should go. Take a look at [contributing.md](contributing.md) to see a to do list.
+This package makes working with [Pwinty](https://pwinty.com) image-printing API in Laravel applications a breeze. You can place orders, add images and submit them for shipping. You can also subscribe to Pwinty webhooks after you configure your callback URL at the Pwinty dashboard.
+
 
 ## Installation
 
-Via Composer
+You can install this package through composer.
 
 ``` bash
-$ composer require wingly/pwinty
+composer require wingly/pwinty
 ```
 
 ## Usage
+TODO 
 
 ## Change log
 
 Please see the [changelog](changelog.md) for more information on what has changed recently.
 
-## Testing
-
-``` bash
-$ composer test
-```
-
 ## Contributing
 
 Please see [contributing.md](contributing.md) for details and a todolist.
 
-## Security
-
-If you discover any security related issues, please email author email instead of using the issue tracker.
-
 ## Credits
 
-- [author name][link-author]
-- [All Contributors][link-contributors]
+- [Dimitris Karapanos](https://github.com/gpanos)
+- [All Contributors](../../contributors)
 
 ## License
 
-license. Please see the [license file](license.md) for more information.
+The MIT License (MIT). Please see the [license file](license.md) for more information.
 
 [ico-version]: https://img.shields.io/packagist/v/wingly/pwinty.svg?style=flat-square
 [ico-downloads]: https://img.shields.io/packagist/dt/wingly/pwinty.svg?style=flat-square
 [ico-travis]: https://img.shields.io/travis/wingly/pwinty/master.svg?style=flat-square
-[ico-styleci]: https://styleci.io/repos/12345678/shield
 
 [link-packagist]: https://packagist.org/packages/wingly/pwinty
 [link-downloads]: https://packagist.org/packages/wingly/pwinty
 [link-travis]: https://travis-ci.org/wingly/pwinty
-[link-styleci]: https://styleci.io/repos/12345678
-[link-author]: https://github.com/wingly
-[link-contributors]: ../../contributors
