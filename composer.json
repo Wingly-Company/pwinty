@@ -1,0 +1,50 @@
+{
+    "name": "wingly/pwinty",
+    "description": "A laravel package to work with pwinty image printing API",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Dimitris Karapanos",
+            "email": "dimitris@wingly.io",
+            "homepage": "https://www.wingly.io",
+            "role": "Developer"
+        }
+    ],
+    "homepage": "https://github.com/flywingly/pwinty",
+    "keywords": [
+        "laravel",
+        "pwinty",
+        "wingly"
+    ],
+    "require": {
+        "illuminate/database": "~5|~6|~7",
+        "illuminate/support": "~5|~6|~7",
+        "guzzlehttp/guzzle": "^6.5"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.0",
+        "mockery/mockery": "^1.1",
+        "orchestra/testbench": "~3|~4",
+        "sempro/phpunit-pretty-print": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Wingly\\Pwinty\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Wingly\\Pwinty\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Wingly\\Pwinty\\PwintyServiceProvider"
+            ],
+            "aliases": {
+                "Pwinty": "Wingly\\Pwinty\\Facades\\Pwinty"
+            }
+        }
+    }
+}
