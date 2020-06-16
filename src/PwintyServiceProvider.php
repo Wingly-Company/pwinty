@@ -47,7 +47,7 @@ class PwintyServiceProvider extends ServiceProvider
         ], 'pwinty.config');
 
         $this->commands([
-            SignWebhookURL::class
+            SignWebhookURL::class,
         ]);
     }
 }
