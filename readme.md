@@ -57,6 +57,55 @@ By default the `App\User` model is used. You can change this by specifying a dif
 PWINTY_MODEL=App\User
 ```
 
+#### Creating orders
+
+To create a new order first retrieve an instance of your orderer model and use the newOrder method to create an order. This method will return you an instance of the `OrderBuilder` where you can set your order parameters. You should finish the order by calling the `create` method last. Check the [Pwinty documentation](https://pwinty.com/api/) for all available parameters.
+
+```php
+$user = User::first();
+
+$user->newOrder()
+    ->setRecipientName('John Doe')
+    ->setCountryCode('FR')
+    ->create();
+```
+
+#### Adding images to orders
+
+After creating an order you can add images to the order by calling the `addImage` method on your `Order` instance. The method requires an identification code of the product for this image and the image's URL. You can add multiple images to the order by chaining the `addImage` method.
+
+```php
+$order = Order::first();
+
+$order->addImage(
+    'ART-PRI-HPG-20X28-PRODIGI_GB', 
+    'https://testserver.com/aphoto.jpg'
+);
+```
+
+#### Submitting an order
+
+When you are ready you can submit your order to Pwinty for processing. The validity of the order will first be checked and then submitted. If the order is not ready to be submitted an `OrderUpdateFailure` exception will be thrown. You can check if an order is submitted by calling the `submitted` method on your `Order` instance.
+
+```php 
+$order = Order::first();
+
+$order->submit();
+
+$order->fresh()->submitted(); // true
+```
+
+#### Cancelling an order
+You can cancel an open order at any given time by calling the `cancel` method on your `Order` instance. If the order status is not cancellable an `OrderUpdateFailure` exception will be thrown. You can check if an order is cancelled by calling the `cancelled` method. 
+
+```php 
+$order = Order::first();
+
+$order->cancel();
+
+$order->fresh()->cancelled(); // true
+```
+
 ## Change log
 
 Please see the [changelog](changelog.md) for more information on what has changed recently.
