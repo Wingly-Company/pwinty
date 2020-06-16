@@ -121,8 +121,8 @@ $pwintyOrder = $order->asPwintyOrder();
 
 ### Processing Pwinty Webhooks
 
-Pwinty can make callbacks to a custom URL whenever the status of one of your orders changes. By default a route that points to a webhook controller is configured through the Pwinty service provider. All incoming Pwinty webhook requests will be handled there. 
-Make sure that you have setup your callback URL under the integrations section of the Pwinty dashboard. By default the webhook controller listens to the `pwinty/webhook` URL path. 
+Pwinty can make callbacks to a custom URL whenever the status of one of your orders changes. By default, a route that points to a webhook controller is configured through the Pwinty service provider. All incoming Pwinty webhook requests will be handled there. 
+Make sure that you have set up your callback URL under the integrations section of the Pwinty dashboard. The webhook controller listens to the `pwinty/webhook` URL path. 
 
 #### CSRF Protection
 
@@ -147,7 +147,7 @@ class VerifyCsrfToken extends Middleware
 The package emits a `Wingly\Pwinty\Events\WebhookProcessed` event when a webhook was processed. The event contains the full payload of the Pwinty webhook.
 You can listen to this event if your application requires to take any actions when a webhook is received. 
 
-## Change log
+## Changelog
 
 Please see the [changelog](changelog.md) for more information on what has changed recently.
 
