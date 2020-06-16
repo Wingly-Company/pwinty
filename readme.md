@@ -17,7 +17,45 @@ composer require wingly/pwinty
 ```
 
 ## Usage
-TODO 
+
+### Database migrations
+
+The Pwinty service provider registers it's own database migrations, so make sure that you run your migrations after installing the package. A new orders table will be created to hold all your users orders.
+
+``` bash
+php artisan migrate
+```
+
+### Pwinty environment setup
+You need to configure your Pwinty api key and merchant id in your `.env` file. 
+
+```
+PWINTY_APIKEY=your_pwinty_key
+PWINTY_MERCHANT=your_pwinty_merchant_id
+```
+You should also set the api environment to be either "sandbox" or "production"
+
+```
+PWINTY_API=sandbox
+```
+
+### Working with orders
+Add the Orderer trait to your model. The trait provides methods to create and retrieve orders easily.
+
+```php
+use Wingly\Pwinty\Orderer;
+
+class User extends Authenticatable
+{
+    use Orderer;
+}
+```
+
+By default the `App\User` model is used. You can change this by specifying a different model in your `.env` file. 
+
+```
+PWINTY_MODEL=App\User
+```
 
 ## Change log
 
@@ -25,7 +63,7 @@ Please see the [changelog](changelog.md) for more information on what has change
 
 ## Contributing
 
-Please see [contributing.md](contributing.md) for details and a todolist.
+Please see [contributing.md](contributing.md) for details.
 
 ## Credits
 

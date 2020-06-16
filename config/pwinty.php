@@ -5,7 +5,7 @@ return [
 
     'api' => env('PWINTY_API', 'sandbox'),
 
-    'merchantId' => env('PWINTY_MERCHANT', 'MerchentID'),
+    'merchantId' => env('PWINTY_MERCHANT', 'MerchantID'),
 
     'apiKey' => env('PWINTY_APIKEY', 'ApiKey'),
 ];
