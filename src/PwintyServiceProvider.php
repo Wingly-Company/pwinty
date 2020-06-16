@@ -5,6 +5,7 @@ namespace Wingly\Pwinty;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Wingly\Pwinty\Commands\SignWebhookURL;
 
 class PwintyServiceProvider extends ServiceProvider
 {
@@ -44,5 +45,9 @@ class PwintyServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/../config/pwinty.php' => config_path('pwinty.php'),
         ], 'pwinty.config');
+
+        $this->commands([
+            SignWebhookURL::class,
+        ]);
     }
 }
