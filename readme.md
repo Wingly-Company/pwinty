@@ -1,5 +1,6 @@
 # Pwinty
 
+![tests](https://github.com/Wingly-Company/pwinty/workflows/tests/badge.svg)
 [![Latest Stable Version](https://poser.pugx.org/wingly/pwinty/v)](//packagist.org/packages/wingly/pwinty)
 [![License](https://poser.pugx.org/wingly/pwinty/license)](//packagist.org/packages/wingly/pwinty)
 [![StyleCI](https://styleci.io/repos/272447992/shield)](https://styleci.io/repos/272447992)
