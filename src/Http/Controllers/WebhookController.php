@@ -6,11 +6,17 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\Routing\Middleware\ValidateSignature;
 use Wingly\Pwinty\Events\WebhookProcessed;
 use Wingly\Pwinty\Order;
 
 class WebhookController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(ValidateSignature::class);
+    }
+
     public function handleWebhook(Request $request)
     {
         $payload = json_decode($request->getContent(), true);

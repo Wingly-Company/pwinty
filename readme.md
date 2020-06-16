@@ -124,6 +124,13 @@ $pwintyOrder = $order->asPwintyOrder();
 Pwinty can make callbacks to a custom URL whenever the status of one of your orders changes. By default, a route that points to a webhook controller is configured through the Pwinty service provider. All incoming Pwinty webhook requests will be handled there. 
 Make sure that you have set up your callback URL under the integrations section of the Pwinty dashboard. The webhook controller listens to the `pwinty/webhook` URL path. 
 
+#### Signed Webhook URL 
+To secure your webhooks you must add a signed URL to Pwinty dashboard. For convenience the package contains a console command that will generate a secure URL for you. Copy the signed URL and add it to Pwinty dashboard. A middleware is in place to validate the signed route requests. 
+
+```bash
+php artisan pwinty:sign
+```
+
 #### CSRF Protection
 
 You gonna need to list the URI as an exception to the `VerifyCsrfToken` middleware included in your application. 
