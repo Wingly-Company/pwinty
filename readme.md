@@ -27,19 +27,21 @@ php artisan migrate
 ```
 
 ### Pwinty environment setup
-You need to configure your Pwinty api key and merchant id in your `.env` file. 
+
+You need to configure your Pwinty API key and merchant ID in your `.env` file. 
 
 ```
 PWINTY_APIKEY=your_pwinty_key
 PWINTY_MERCHANT=your_pwinty_merchant_id
 ```
-You should also set the api environment to be either "sandbox" or "production"
+You should also set the API environment to be either "sandbox" or "production"
 
 ```
 PWINTY_API=sandbox
 ```
 
 ### Working with orders
+
 Add the Orderer trait to your model. The trait provides methods to create and retrieve orders easily.
 
 ```php
@@ -59,7 +61,7 @@ PWINTY_MODEL=App\User
 
 #### Creating orders
 
-To create a new order first retrieve an instance of your orderer model and use the newOrder method to create an order. This method will return you an instance of the `OrderBuilder` where you can set your order parameters. You should finish the order by calling the `create` method last. Check the [Pwinty documentation](https://pwinty.com/api/) for all available parameters.
+To create a new order first retrieve an instance of your orderer model and use the `newOrder` method to create an order. This method will return you an instance of the `OrderBuilder` where you can set your order parameters. You should finish the order by calling the `create` method last. Check the [Pwinty documentation](https://pwinty.com/api/) for all available parameters.
 
 ```php
 $user = User::first();
@@ -96,6 +98,7 @@ $order->fresh()->submitted(); // true
 ```
 
 #### Cancelling an order
+
 You can cancel an open order at any given time by calling the `cancel` method on your `Order` instance. If the order status is not cancellable an `OrderUpdateFailure` exception will be thrown. You can check if an order is cancelled by calling the `cancelled` method. 
 
 ```php 
@@ -105,6 +108,44 @@ $order->cancel();
 
 $order->fresh()->cancelled(); // true
 ```
+
+#### Getting the raw Pwinty order
+
+You can get the raw Pwinty order object by calling the `asPwintyOrder` method on your `Order` instance. Check the [Pwinty documentation](https://pwinty.com/api/) for an example response. 
+
+```php
+$order = Order::first();
+
+$pwintyOrder = $order->asPwintyOrder();
+```
+
+### Processing Pwinty Webhooks
+
+Pwinty can make callbacks to a custom URL whenever the status of one of your orders changes. By default a route that points to a webhook controller is configured through the Pwinty service provider. All incoming Pwinty webhook requests will be handled there. 
+Make sure that you have setup your callback URL under the integrations section of the Pwinty dashboard. By default the webhook controller listens to the `pwinty/webhook` URL path. 
+
+#### CSRF Protection
+
+You gonna need to list the URI as an exception to the `VerifyCsrfToken` middleware included in your application. 
+
+```php 
+class VerifyCsrfToken extends Middleware
+{
+    /**
+     * The URIs that should be excluded from CSRF verification.
+     *
+     * @var array
+     */
+    protected $except = [
+        'pwinty/*'
+    ];
+}
+```
+
+#### Events
+
+The package emits a `Wingly\Pwinty\Events\WebhookProcessed` event when a webhook was processed. The event contains the full payload of the Pwinty webhook.
+You can listen to this event if your application requires to take any actions when a webhook is received. 
 
 ## Change log
 
