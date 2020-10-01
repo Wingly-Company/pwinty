@@ -39,4 +39,13 @@ class OrderTest extends TestCase
 
         $this->assertTrue($order->cancelled());
     }
+
+    public function test_submitted_orders_cannot_be_updated()
+    {
+        $order = new Order(['pwinty_status' => 'Complete']);
+
+        $this->expectException(OrderUpdateFailure::class);
+
+        $order->updatePwintyOrder(['foo' => 'bar']);
+    }
 }

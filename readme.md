@@ -110,6 +110,16 @@ $order->cancel();
 $order->fresh()->cancelled(); // true
 ```
 
+#### Updating an order 
+
+You can update any attribute of an open order by calling the `updatePwintyOrder` on your `Order` instance. If the order status is not updatable an `OrderUpdateFailure` exception will be thrown. The method will return you the raw Pwinty order object. 
+
+```php 
+$order = Order::first();
+
+$pwintyOrder = $order->updatePwintyOrder(['recipientName' => 'John Doe']);
+```
+
 #### Getting the raw Pwinty order
 
 You can get the raw Pwinty order object by calling the `asPwintyOrder` method on your `Order` instance. Check the [Pwinty documentation](https://pwinty.com/api/) for an example response. 

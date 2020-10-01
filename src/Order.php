@@ -64,6 +64,20 @@ class Order extends Model
         return $this;
     }
 
+    public function updatePwintyOrder(array $options)
+    {
+        $this->guardAgainstSubmitted();
+
+        $pwintyOrder = app(Pwinty::class)->updateOrder(
+            $this->pwinty_id,
+            array_merge((array) $this->asPwintyOrder(), $options)
+        );
+
+        $this->syncStatus();
+
+        return $pwintyOrder;
+    }
+
     public function cancelled()
     {
         return $this->pwinty_status === self::STATUS_CANCELLED;

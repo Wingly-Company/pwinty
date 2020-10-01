@@ -68,6 +68,15 @@ class Pwinty
         return json_decode($response->getBody())->data;
     }
 
+    public function updateOrder(int $orderId, array $options)
+    {
+        $payload = $this->getRequestPayload($options);
+
+        $response = $this->client->request('PUT', $this->apiUrl."/orders/{$orderId}", $payload);
+
+        return json_decode($response->getBody())->data;
+    }
+
     public function addImage(int $orderId, array $image)
     {
         $payload = $this->getRequestPayload($image);

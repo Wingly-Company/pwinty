@@ -116,4 +116,19 @@ class OrdersTest extends FeatureTestCase
 
         $this->assertTrue($order->cancelled());
     }
+
+    public function test_can_update_orders()
+    {
+        $user = $this->createUser();
+
+        $order = $user->newOrder()
+            ->setRecipientName('Dimitris Karapanos')
+            ->setCountryCode('FR')
+            ->create();
+
+        $pwintyOrder = $order->updatePwintyOrder(['recipientName' => 'John Doe']);
+
+        $this->assertEquals('John Doe', $pwintyOrder->recipientName);
+        $this->assertEquals($order->asPwintyOrder()->recipientName, $pwintyOrder->recipientName);
+    }
 }
