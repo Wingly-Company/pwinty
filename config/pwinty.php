@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'model' => env('PWINTY_MODEL', App\User::class),
+    'model' => env('PWINTY_MODEL', class_exists(App\Models\User::class) ? App\Models\User::class : App\User::class),
 
     'api' => env('PWINTY_API', 'sandbox'),
 
