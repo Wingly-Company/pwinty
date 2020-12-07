@@ -24,15 +24,6 @@ class OrderTest extends TestCase
         $this->assertTrue($order->submitted());
     }
 
-    public function test_submitted_orders_cannot_be_cancelled()
-    {
-        $order = new Order(['pwinty_status' => 'Complete']);
-
-        $this->expectException(OrderUpdateFailure::class);
-
-        $order->cancel();
-    }
-
     public function test_we_can_check_if_an_order_is_cancelled()
     {
         $order = new Order(['pwinty_status' => 'Cancelled']);

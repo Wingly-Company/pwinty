@@ -44,7 +44,7 @@ class Order extends Model
 
     public function cancel()
     {
-        $this->guardAgainstSubmitted();
+        $this->guardAgainstNoncancelable();
 
         app(Pwinty::class)->updateStatus($this->pwinty_id, self::STATUS_CANCELLED);
 
@@ -112,6 +112,15 @@ class Order extends Model
     protected function guardAgainstSubmitted()
     {
         if ($this->pwinty_status !== self::STATUS_NOT_YET_SUBMITTED) {
+            throw OrderUpdateFailure::nonUpdatableStatus($this);
+        }
+    }
+
+    protected function guardAgainstNoncancelable()
+    {
+        $pwintyOrder = $this->asPwintyOrder();
+
+        if ($pwintyOrder->canCancel === false) {
             throw OrderUpdateFailure::nonUpdatableStatus($this);
         }
     }

@@ -117,6 +117,39 @@ class OrdersTest extends FeatureTestCase
         $this->assertTrue($order->cancelled());
     }
 
+    public function test_can_cancel_submitted_orders()
+    {
+        $user = $this->createUser();
+
+        $order = $user->newOrder()
+            ->setRecipientName('Dimitris Karapanos')
+            ->setAddress1('Rue de Rivoli')
+            ->setAddressTownOrCity('Paris')
+            ->setPostalOrZipCode('75001')
+            ->setCountryCode('FR')
+            ->create()
+            ->addImage(getenv('PWINTY_SKU'), 'https://source.unsplash.com/random')
+            ->submit()
+            ->cancel();
+
+        $this->assertTrue($order->cancelled());
+    }
+
+    public function test_non_cancelable_orders_throw_an_exception()
+    {
+        $user = $this->createUser();
+
+        $order = $user->newOrder()
+            ->setRecipientName('Dimitris Karapanos')
+            ->setCountryCode('FR')
+            ->create()
+            ->cancel();
+
+        $this->expectException(OrderUpdateFailure::class);
+
+        $order->cancel();
+    }
+
     public function test_can_update_orders()
     {
         $user = $this->createUser();
