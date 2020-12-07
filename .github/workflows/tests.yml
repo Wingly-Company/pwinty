@@ -8,24 +8,24 @@ jobs:
   tests:
 
     runs-on: ubuntu-latest
-    
+
     strategy:
-      matrix: 
-        php: [7.4, 7.3, 7.2] 
+      matrix:
+        php: [7.4, 7.3]
         laravel: [8.*, 7.*, 6.*]
-        
+
     name: P${{ matrix.php }} - L${{ matrix.laravel }}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-        
+
       - name: Cache dependencies
         uses: actions/cache@v1
-        with: 
+        with:
           path: ~/.composer/cache/files
           key: dependencies-laravel-${{ matrix.laravel }}-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
-          
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -35,7 +35,7 @@ jobs:
 
       - name: Install dependencies
         run: composer install --no-scripts
-      
+
       - name: Execute tests
         run: vendor/bin/phpunit --verbose
         env:
