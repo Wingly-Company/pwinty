@@ -38,21 +38,21 @@ class Pwinty
     public function setApiUrl(string $apiEnv)
     {
         if ($apiEnv === 'production') {
-            $this->apiUrl = 'https://api.pwinty.com/v3.0';
+            $this->apiUrl = 'https://api.prodigi.com/v4.0';
         } else {
-            $this->apiUrl = 'https://sandbox.pwinty.com/v3.0';
+            $this->apiUrl = 'https://api.sandbox.prodigi.com/v4.0';
         }
 
         return $this;
     }
 
-    public function getOrder(int $orderId)
+    public function getOrder(string $orderId)
     {
         $payload = $this->getRequestPayload();
 
         $response = $this->client->request('GET', $this->apiUrl."/orders/{$orderId}", $payload);
 
-        return json_decode($response->getBody())->data;
+        return json_decode($response->getBody())->order;
     }
 
     public function createOrder(array $order)
@@ -65,51 +65,23 @@ class Pwinty
             throw new OrderMissingRequiredParameters($e->getMessage());
         }
 
-        return json_decode($response->getBody())->data;
+        return json_decode($response->getBody())->order;
     }
 
-    public function updateOrder(int $orderId, array $options)
-    {
-        $payload = $this->getRequestPayload($options);
-
-        $response = $this->client->request('PUT', $this->apiUrl."/orders/{$orderId}", $payload);
-
-        return json_decode($response->getBody())->data;
-    }
-
-    public function addImage(int $orderId, array $image)
-    {
-        $payload = $this->getRequestPayload($image);
-
-        $response = $this->client->request('POST', $this->apiUrl."/orders/{$orderId}/images", $payload);
-
-        return json_decode($response->getBody())->data;
-    }
-
-    public function checkSubmissionStatus(int $orderId)
+    public function cancelOrder(string $orderId)
     {
         $payload = $this->getRequestPayload();
 
-        $response = $this->client->request('GET', $this->apiUrl."/orders/{$orderId}/SubmissionStatus", $payload);
+        $response = $this->client->request('POST', $this->apiUrl."/orders/{$orderId}/actions/cancel", $payload);
 
-        return json_decode($response->getBody())->data;
-    }
-
-    public function updateStatus(int $orderId, string $status)
-    {
-        $payload = $this->getRequestPayload(['status' => $status]);
-
-        $response = $this->client->request('POST', $this->apiUrl."/orders/{$orderId}/status", $payload);
-
-        return json_decode($response->getBody())->data;
+        return json_decode($response->getBody());
     }
 
     protected function getRequestPayload(array $params = null)
     {
         $payload = [
             'headers' => [
-                'X-Pwinty-REST-API-Key' => $this->apiKey,
-                'X-Pwinty-MerchantId' => $this->merchantId,
+                'X-API-Key' => $this->apiKey,
                 'Content-type' => 'application/json',
             ],
         ];

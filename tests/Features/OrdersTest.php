@@ -1,8 +1,6 @@
 <?php
 
 use Wingly\Pwinty\Exceptions\OrderMissingRequiredParameters;
-use Wingly\Pwinty\Exceptions\OrderUpdateFailure;
-use Wingly\Pwinty\PaymentMethod;
 use Wingly\Pwinty\ShippingMethod;
 
 class OrdersTest extends FeatureTestCase
@@ -20,10 +18,10 @@ class OrdersTest extends FeatureTestCase
             ->setPostalOrZipCode('75001')
             ->setCountryCode('FR')
             ->setPreferredShippingMethod(ShippingMethod::Standard)
-            ->setPayment(PaymentMethod::InvoiceMe)
             ->setMobileTelephone('+3373132112')
             ->setTelephone('+3373132112')
             ->setEmail($user->email)
+            ->setImage('https://source.unsplash.com/random', getenv('PWINTY_SKU'))
             ->create();
 
         $this->assertEquals(1, $user->orders->count());
@@ -49,59 +47,16 @@ class OrdersTest extends FeatureTestCase
 
         $user->newOrder()
             ->setRecipientName('Dimitris Karapanos')
+            ->setAddress1('Rue de Rivoli')
+            ->setPostalOrZipCode('75001')
+            ->setAddressTownOrCity('Paris')
             ->setCountryCode('FR')
+            ->setPreferredShippingMethod(ShippingMethod::Standard)
+            ->setImage('https://source.unsplash.com/random', getenv('PWINTY_SKU'))
             ->create();
 
         $this->assertEquals(1, $user->orders->count());
         $this->assertNotNull($user->orders->first()->pwinty_id);
-    }
-
-    public function test_can_add_images_to_orders()
-    {
-        $user = $this->createUser();
-
-        $order = $user->newOrder()
-            ->setRecipientName('Dimitris Karapanos')
-            ->setCountryCode('FR')
-            ->create();
-
-        $order->addImage(getenv('PWINTY_SKU'), 'https://source.unsplash.com/random');
-
-        $pwintyOrder = $order->asPwintyOrder();
-
-        $this->assertEquals(1, count($pwintyOrder->images));
-    }
-
-    public function test_can_submit_orders()
-    {
-        $user = $this->createUser();
-
-        $order = $user->newOrder()
-            ->setRecipientName('Dimitris Karapanos')
-            ->setAddress1('Rue de Rivoli')
-            ->setAddressTownOrCity('Paris')
-            ->setPostalOrZipCode('75001')
-            ->setCountryCode('FR')
-            ->create()
-            ->addImage(getenv('PWINTY_SKU'), 'https://source.unsplash.com/random')
-            ->submit();
-
-        $this->assertTrue($order->submitted());
-    }
-
-    public function test_invalid_orders_cant_be_submitted()
-    {
-        $user = $this->createUser();
-
-        $this->expectException(OrderUpdateFailure::class);
-
-        $order = $user->newOrder()
-            ->setRecipientName('Dimitris Karapanos')
-            ->setCountryCode('FR')
-            ->create()
-            ->submit();
-
-        $this->assertEquals(0, $user->orders->count());
     }
 
     public function test_can_cancel_orders()
@@ -110,58 +65,15 @@ class OrdersTest extends FeatureTestCase
 
         $order = $user->newOrder()
             ->setRecipientName('Dimitris Karapanos')
-            ->setCountryCode('FR')
-            ->create()
-            ->cancel();
-
-        $this->assertTrue($order->cancelled());
-    }
-
-    public function test_can_cancel_submitted_orders()
-    {
-        $user = $this->createUser();
-
-        $order = $user->newOrder()
-            ->setRecipientName('Dimitris Karapanos')
             ->setAddress1('Rue de Rivoli')
-            ->setAddressTownOrCity('Paris')
             ->setPostalOrZipCode('75001')
+            ->setAddressTownOrCity('Paris')
             ->setCountryCode('FR')
+            ->setPreferredShippingMethod(ShippingMethod::Standard)
+            ->setImage('https://source.unsplash.com/random', getenv('PWINTY_SKU'))
             ->create()
-            ->addImage(getenv('PWINTY_SKU'), 'https://source.unsplash.com/random')
-            ->submit()
             ->cancel();
 
         $this->assertTrue($order->cancelled());
-    }
-
-    public function test_non_cancelable_orders_throw_an_exception()
-    {
-        $user = $this->createUser();
-
-        $order = $user->newOrder()
-            ->setRecipientName('Dimitris Karapanos')
-            ->setCountryCode('FR')
-            ->create()
-            ->cancel();
-
-        $this->expectException(OrderUpdateFailure::class);
-
-        $order->cancel();
-    }
-
-    public function test_can_update_orders()
-    {
-        $user = $this->createUser();
-
-        $order = $user->newOrder()
-            ->setRecipientName('Dimitris Karapanos')
-            ->setCountryCode('FR')
-            ->create();
-
-        $pwintyOrder = $order->updatePwintyOrder(['recipientName' => 'John Doe']);
-
-        $this->assertEquals('John Doe', $pwintyOrder->recipientName);
-        $this->assertEquals($order->asPwintyOrder()->recipientName, $pwintyOrder->recipientName);
     }
 }
