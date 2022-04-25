@@ -140,8 +140,7 @@ class OrderBuilder
         string $sku,
         int $copies = 1,
         string $sizing = 'fillPrintArea'
-    )
-    {
+    ) {
         $this->image = $image;
 
         $this->sku = $sku;
