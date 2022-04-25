@@ -34,6 +34,14 @@ class OrderBuilder
 
     protected $email;
 
+    protected $sku;
+
+    protected $image;
+
+    protected $copies;
+
+    protected $sizing;
+
     public function __construct($owner)
     {
         $this->owner = $owner;
@@ -98,21 +106,10 @@ class OrderBuilder
     public function setPreferredShippingMethod(string $preferredShippingMethod)
     {
         if (! ShippingMethod::validate($preferredShippingMethod)) {
-            throw new InvalidArgumentException;
+            throw new InvalidArgumentException();
         }
 
         $this->preferredShippingMethod = $preferredShippingMethod;
-
-        return $this;
-    }
-
-    public function setPayment(string $payment)
-    {
-        if (! PaymentMethod::validate($payment)) {
-            throw new InvalidArgumentException;
-        }
-
-        $this->payment = $payment;
 
         return $this;
     }
@@ -138,6 +135,23 @@ class OrderBuilder
         return $this;
     }
 
+    public function setImage(
+        string $image,
+        string $sku,
+        int $copies = 1,
+        string $sizing = 'fillPrintArea'
+    ) {
+        $this->image = $image;
+
+        $this->sku = $sku;
+
+        $this->copies = $copies;
+
+        $this->sizing = $sizing;
+
+        return $this;
+    }
+
     public function create(): Order
     {
         $payload = $this->buildPayload();
@@ -146,7 +160,7 @@ class OrderBuilder
 
         $order = $this->owner->orders()->create([
             'pwinty_id' => $pwintyOrder->id,
-            'pwinty_status' => $pwintyOrder->status,
+            'pwinty_status' => $pwintyOrder->status->stage,
         ]);
 
         return $order;
@@ -155,19 +169,35 @@ class OrderBuilder
     protected function buildPayload()
     {
         $payload = array_filter([
-            'merchantOrderId' => $this->merchantOrderId,
-            'recipientName' => $this->recipientName,
-            'address1' => $this->address1,
-            'address2' => $this->address2,
-            'addressTownOrCity' => $this->addressTownOrCity,
-            'stateOrCounty' => $this->stateOrCounty,
-            'postalOrZipCode' => $this->postalOrZipCode,
-            'countryCode' => $this->countryCode,
-            'preferredShippingMethod' => $this->preferredShippingMethod,
-            'payment' => $this->payment,
-            'mobileTelephone' => $this->mobileTelephone,
-            'telephone' => $this->telephone,
-            'email' => $this->email,
+            'merchantReference' => $this->merchantOrderId,
+            'recipient' => [
+                'name' => $this->recipientName,
+                'phoneNumber' => $this->telephone,
+                'email' => $this->email,
+                'address' => [
+                    'line1' => $this->address1,
+                    'line2' => $this->address2,
+                    'postalOrZipCode' => $this->postalOrZipCode,
+                    'countryCode' => $this->countryCode,
+                    'TownOrCity' => $this->addressTownOrCity,
+                    'stateOrCounty' => $this->stateOrCounty,
+                ],
+            ],
+            'shippingMethod' => $this->preferredShippingMethod,
+            'items' => [
+                [
+                    'sku' => $this->sku,
+                    'copies' => $this->copies,
+                    'sizing' => $this->sizing,
+                    'assets' => [
+                        [
+                            'printArea' => 'default',
+                            'url' => $this->image,
+                        ],
+                    ],
+                ],
+            ],
+
         ]);
 
         return $payload;
